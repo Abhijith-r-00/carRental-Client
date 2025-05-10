@@ -1,0 +1,447 @@
+/* Cars Grid Layout */
+.cars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.car-card {
+  transition: transform 0.3s ease;
+}
+
+.car-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.car-image {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.car-info {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.price-tag {
+  margin-top: auto;
+}
+
+/* Responsive Grid */
+@media (max-width: 1024px) {
+  .cars-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .cars-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Equal Card Heights */
+.cars-grid {
+  align-items: stretch;
+}
+
+.car-card {
+  height: 100%;
+}
+
+/* Proper Spacing */
+.section-header {
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.category-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}/* Base Styles */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;400;500;600&display=swap');
+
+:root {
+  --primary: #00f0ff;
+  --secondary: #ff00f0;
+  --dark: #0a0a1a;
+  --glass: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+body {
+  background-color: var(--dark);
+  color: white;
+  font-family: 'Rajdhani', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.futuristic-home {
+  padding-top: 80px; /* Space for fixed header */
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(rgba(10, 10, 26, 0.8), rgba(10, 10, 26, 0.8)), 
+              url('https://images.pexels.com/photos/919073/pexels-photo-919073.jpeg?auto=compress&cs=tinysrgb&w=600') no-repeat center center;
+  background-size: cover;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.hero-gradient {
+  display: block;
+  font-size: 4rem;
+  font-weight: 700;
+  font-family: 'Orbitron', sans-serif;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.cta-button {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: var(--dark);
+  border: none;
+  padding: 15px 30px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s;
+}
+
+.cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 240, 255, 0.3);
+}
+
+.cta-button svg {
+  margin-left: 10px;
+}
+
+/* Section Styling */
+.section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.section-header h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.section-header p {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Car Showcase */
+.category-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.tab-btn {
+  background: transparent;
+  color: white;
+  border: 1px solid var(--glass-border);
+  padding: 12px 25px;
+  border-radius: 50px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s;
+}
+
+.tab-btn svg {
+  margin-right: 8px;
+}
+
+.tab-btn.active {
+  background: var(--primary);
+  color: var(--dark);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+.tab-btn:hover:not(.active) {
+  border-color: var(--primary);
+}
+
+/* Cars Grid */
+.cars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.car-card {
+  transition: transform 0.3s ease;
+}
+
+.car-card:hover {
+  transform: translateY(-10px);
+}
+
+.card-glass {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.car-image {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.car-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: var(--primary);
+  color: var(--dark);
+  padding: 5px 15px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.car-info {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.car-info h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.car-specs {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.car-specs span {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.car-specs svg {
+  margin-right: 5px;
+  color: var(--primary);
+}
+
+.price-tag {
+  margin-top: auto;
+  margin-bottom: 20px;
+}
+
+.price-tag span {
+  display: block;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.price-tag h4 {
+  font-size: 2rem;
+  font-family: 'Orbitron', sans-serif;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1;
+}
+
+.price-tag small {
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+.rent-now {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: 12px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  transition: all 0.3s;
+}
+
+.rent-now:hover {
+  background: var(--primary);
+  color: var(--dark);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+.rent-now svg {
+  margin-left: 8px;
+}
+
+/* Features Section */
+.features-section {
+  padding: 100px 0;
+  background: linear-gradient(to bottom, rgba(10, 10, 26, 0.7), rgba(10, 10, 26, 0.9));
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.feature-card {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 40px 30px;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 30px rgba(0, 240, 255, 0.1);
+}
+
+.feature-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 240, 255, 0.1);
+  border-radius: 50%;
+  font-size: 2rem;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+.feature-card h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.feature-card p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .hero-gradient {
+    font-size: 3.5rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .hero-gradient {
+    font-size: 3rem;
+  }
+  
+  .cars-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-gradient {
+    font-size: 2.5rem;
+  }
+  
+  .section-header h2 {
+    font-size: 2rem;
+  }
+  
+  .category-tabs {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-gradient {
+    font-size: 2rem;
+  }
+  
+  .cars-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+}
