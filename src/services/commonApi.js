@@ -9,6 +9,8 @@ const commonApi=async(httpMethod,endpoint,data,requestHeader)=>{
         data:data,
         headers:requestHeader?requestHeader:{"Content-Type":"application/json"}
     }
+    // console.log(configration);
+    
    return await axios(configration).then((res)=>{
         return res
     }).catch((err)=>{

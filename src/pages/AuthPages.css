@@ -294,3 +294,23 @@
     gap: 10px;
   }
 }
+.input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.input-group .input-icon {
+  margin-right: 4px;
+  font-size: 1.2rem;
+    margin-left: 0px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #555;
+}
+
+.input-group select {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 1rem;
+
+}

@@ -1,52 +1,56 @@
-import React, { useState } from 'react';
-import { FiUser, FiLock, FiMail, FiCreditCard } from 'react-icons/fi';
-import { FaCar, FaUserShield } from 'react-icons/fa';
-import './AuthPages.css'
-import { registerUser } from '../services/allApi';
-import { toast } from 'react-toastify';
+import React, { useState } from "react";
+import { FiUser, FiLock, FiMail, FiCreditCard } from "react-icons/fi";
+import { FaCar, FaUserShield } from "react-icons/fa";
+import "./AuthPages.css";
+import { registerUser } from "../services/allApi";
+import { toast } from "react-toastify";
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    licenseNumber: ''
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    licenseNumber: "",
+    userType: "",
   });
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit =async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
-    
+
     // Handle registration logic
     try {
-        if(formData.fullName &&formData.email&&formData.password&&formData.confirmPassword&&formData.licenseNumber){
-            if(formData.password==formData.confirmPassword){
-                const apiResponse=await registerUser(formData)
-                // console.log(apiResponse)
-                if(apiResponse.status==201){
-                    toast.success('User registered successfully!');
-                }else{
-                    toast.error('Registration failed. Please try again.');
-                }
-            }
+      if (
+        formData.fullName &&
+        formData.email &&
+        formData.password &&
+        formData.confirmPassword &&
+        formData.licenseNumber&&formData.userType
+      ) {
+        if (formData.password == formData.confirmPassword) {
+          const apiResponse = await registerUser(formData);
+          // console.log(apiResponse)
+          if (apiResponse.status == 201) {
+            toast.success("User registered successfully!");
+          } else {
+            toast.error("Registration failed. Please try again.");
+          }
         }
+      }
     } catch (error) {
-        console.log(error);
-        
+      console.log(error);
     }
   };
 
   return (
     <div className="auth-page">
-    
-      
       <main className="auth-container">
         <div className="auth-glass">
           <div className="auth-header">
@@ -54,7 +58,7 @@ const RegisterPage = () => {
             <h2>Join LETRIDE</h2>
             <p>Create your account to start renting premium vehicles</p>
           </div>
-          
+
           <form onSubmit={handleSubmit} className="auth-form">
             <div className="input-group">
               <FiUser className="input-icon" />
@@ -67,7 +71,7 @@ const RegisterPage = () => {
                 required
               />
             </div>
-            
+
             <div className="input-group">
               <FiMail className="input-icon" />
               <input
@@ -79,7 +83,7 @@ const RegisterPage = () => {
                 required
               />
             </div>
-            
+
             <div className="input-group">
               <FiLock className="input-icon" />
               <input
@@ -91,7 +95,7 @@ const RegisterPage = () => {
                 required
               />
             </div>
-            
+
             <div className="input-group">
               <FiLock className="input-icon" />
               <input
@@ -103,7 +107,7 @@ const RegisterPage = () => {
                 required
               />
             </div>
-            
+
             <div className="input-group">
               <FaUserShield className="input-icon" />
               <input
@@ -115,7 +119,22 @@ const RegisterPage = () => {
                 required
               />
             </div>
-{/*             
+            <div className="input-group">
+              {/* <FaUserShield className="input-icon" /> */}
+              <select
+                name="userType"
+                value={formData.userType}
+                onChange={handleChange}
+                required
+                className="form-select"
+              >
+                <option value="">Select User Type</option>
+                <option value="Renter">Renter</option>
+                <option value="RentalOwner">Service Provider(car rental Owners)</option>
+              </select>
+            </div>
+
+            {/*             
             <div className="terms-agreement">
               <input
                 type="checkbox"
@@ -132,20 +151,20 @@ const RegisterPage = () => {
               Create Account
             </button>
           </form>
-          
+
           <div className="auth-footer">
-            <p>Already have an account? <a href="/login">Sign in</a></p>
+            <p>
+              Already have an account? <a href="/login">Sign in</a>
+            </p>
           </div>
         </div>
-        
+
         <div className="auth-decoration">
           <div className="neon-circle"></div>
           <div className="neon-circle"></div>
           <div className="neon-circle"></div>
         </div>
       </main>
-      
-
     </div>
   );
 };

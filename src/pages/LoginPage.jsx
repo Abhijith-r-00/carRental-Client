@@ -4,11 +4,12 @@ import { FaCar } from 'react-icons/fa';
 import './AuthPages.css'
 import { logibnUser } from '../services/allApi';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-
+  const navigate=useNavigate()
   const handleSubmit = async(e) => {
     e.preventDefault();
     // Handle login logic
@@ -24,6 +25,13 @@ const LoginPage = () => {
                 toast.success('Logined successfully!');
                  sessionStorage.setItem("user",apiResponse?.data?.user.fullName)
             sessionStorage.setItem("token",apiResponse?.data?.token)
+            sessionStorage.setItem("userType",apiResponse?.data?.user.userType)
+            if (apiResponse.data.user.userType=='Renter'){
+              navigate('/dashboard')
+            }
+            if(apiResponse.data.user.userType=='RentalOwner'){
+              navigate('/ownerDashboard')
+            }
             }else{
                 toast.error("Invalid Credintials")
             }
