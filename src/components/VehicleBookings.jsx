@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { FiCalendar, FiClock, FiCreditCard, FiUser, FiCheck } from 'react-icons/fi';
+import {
+  FiCalendar, FiCreditCard, FiUser, FiCheck
+} from 'react-icons/fi';
 import { FaCar, FaGasPump, FaMoneyBillWave } from 'react-icons/fa';
 import { IoMdSpeedometer } from 'react-icons/io';
-import { MdAirlineSeatReclineExtra, MdLocationOn } from 'react-icons/md';
-import './VehicleBookings.css'
+import { MdAirlineSeatReclineExtra } from 'react-icons/md';
+import './VehicleBookings.css';
+
 const VehicleBookings = ({ vehicle, onClose }) => {
   const [step, setStep] = useState(1);
   const [bookingDetails, setBookingDetails] = useState({
@@ -26,7 +29,6 @@ const VehicleBookings = ({ vehicle, onClose }) => {
     if (step < 3) {
       setStep(step + 1);
     } else {
-      // Handle booking submission
       console.log('Booking submitted:', { vehicle, bookingDetails });
       onClose();
     }
@@ -36,7 +38,8 @@ const VehicleBookings = ({ vehicle, onClose }) => {
     <div className="booking-modal">
       <div className="booking-container">
         <button className="close-btn" onClick={onClose}>×</button>
-        
+
+        {/* Vehicle Information */}
         <div className="vehicle-info">
           <div className="vehicle-image">
             {vehicle.image ? (
@@ -61,31 +64,36 @@ const VehicleBookings = ({ vehicle, onClose }) => {
           </div>
         </div>
 
+        {/* Booking Form */}
         <form onSubmit={handleSubmit} className="booking-form">
           {step === 1 && (
             <div className="form-step">
               <h3>Select Dates</h3>
               <div className="input-group">
-                <FiCalendar className="input-icon" />
-                <label>Pickup Date</label>
-                <input
-                  type="date"
-                  name="pickupDate"
-                  value={bookingDetails.pickupDate}
-                  onChange={handleInputChange}
-                  required
-                />
+                <label>
+                  <FiCalendar className="input-icon" />
+                  Pickup Date
+                  <input
+                    type="date"
+                    name="pickupDate"
+                    value={bookingDetails.pickupDate}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </label>
               </div>
               <div className="input-group">
-                <FiCalendar className="input-icon" />
-                <label>Return Date</label>
-                <input
-                  type="date"
-                  name="returnDate"
-                  value={bookingDetails.returnDate}
-                  onChange={handleInputChange}
-                  required
-                />
+                <label>
+                  <FiCalendar className="input-icon" />
+                  Return Date
+                  <input
+                    type="date"
+                    name="returnDate"
+                    value={bookingDetails.returnDate}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </label>
               </div>
             </div>
           )}
@@ -118,11 +126,11 @@ const VehicleBookings = ({ vehicle, onClose }) => {
                 </label>
               </div>
 
-              {bookingDetails.paymentMethod && (
-                <div className="card-details">
-                  <div className="input-group">
+              <div className="card-details">
+                <div className="input-group">
+                  <label>
                     <FiCreditCard className="input-icon" />
-                    <label>Card Number</label>
+                    Card Number
                     <input
                       type="text"
                       name="cardNumber"
@@ -131,10 +139,12 @@ const VehicleBookings = ({ vehicle, onClose }) => {
                       placeholder="1234 5678 9012 3456"
                       required
                     />
-                  </div>
-                  <div className="card-row">
-                    <div className="input-group">
-                      <label>Expiry Date</label>
+                  </label>
+                </div>
+                <div className="card-row">
+                  <div className="input-group">
+                    <label>
+                      Expiry Date
                       <input
                         type="text"
                         name="cardExpiry"
@@ -143,9 +153,11 @@ const VehicleBookings = ({ vehicle, onClose }) => {
                         placeholder="MM/YY"
                         required
                       />
-                    </div>
-                    <div className="input-group">
-                      <label>CVC</label>
+                    </label>
+                  </div>
+                  <div className="input-group">
+                    <label>
+                      CVC
                       <input
                         type="text"
                         name="cardCvc"
@@ -154,11 +166,13 @@ const VehicleBookings = ({ vehicle, onClose }) => {
                         placeholder="123"
                         required
                       />
-                    </div>
+                    </label>
                   </div>
-                  <div className="input-group">
+                </div>
+                <div className="input-group">
+                  <label>
                     <FiUser className="input-icon" />
-                    <label>Cardholder Name</label>
+                    Cardholder Name
                     <input
                       type="text"
                       name="name"
@@ -167,9 +181,9 @@ const VehicleBookings = ({ vehicle, onClose }) => {
                       placeholder="Name on card"
                       required
                     />
-                  </div>
+                  </label>
                 </div>
-              )}
+              </div>
             </div>
           )}
 
@@ -180,39 +194,18 @@ const VehicleBookings = ({ vehicle, onClose }) => {
               </div>
               <h3>Confirm Booking</h3>
               <div className="booking-summary">
-                <div className="summary-item">
-                  <span>Vehicle:</span>
-                  <span>{vehicle.make} {vehicle.model}</span>
-                </div>
-                <div className="summary-item">
-                  <span>Pickup:</span>
-                  <span>{bookingDetails.pickupDate}</span>
-                </div>
-                <div className="summary-item">
-                  <span>Return:</span>
-                  <span>{bookingDetails.returnDate}</span>
-                </div>
-                <div className="summary-item">
-                  <span>Payment Method:</span>
-                  <span>{bookingDetails.paymentMethod === 'credit' ? 'Credit Card' : 'Debit Card'}</span>
-                </div>
-                <div className="summary-item total">
-                  <span>Total:</span>
-                  <span>${vehicle.pricePerDay * 3} (3 days)</span>
-                </div>
+                <div className="summary-item"><span>Vehicle:</span><span>{vehicle.make} {vehicle.model}</span></div>
+                <div className="summary-item"><span>Pickup:</span><span>{bookingDetails.pickupDate}</span></div>
+                <div className="summary-item"><span>Return:</span><span>{bookingDetails.returnDate}</span></div>
+                <div className="summary-item"><span>Payment:</span><span>{bookingDetails.paymentMethod === 'credit' ? 'Credit' : 'Debit'} Card</span></div>
+                <div className="summary-item total"><span>Total:</span><span>${vehicle.pricePerDay * 3} (3 days)</span></div>
               </div>
             </div>
           )}
 
           <div className="form-actions">
             {step > 1 && (
-              <button
-                type="button"
-                className="secondary-btn"
-                onClick={() => setStep(step - 1)}
-              >
-                Back
-              </button>
+              <button type="button" className="secondary-btn" onClick={() => setStep(step - 1)}>Back</button>
             )}
             <button type="submit" className="primary-btn">
               {step < 3 ? 'Continue' : 'Confirm Booking'}

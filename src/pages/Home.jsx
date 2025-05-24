@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { FiArrowRight, FiStar, FiClock, FiShield, FiBattery } from 'react-icons/fi';
 import { FaCarSide, FaRegSnowflake } from 'react-icons/fa';
 import { IoMdSpeedometer } from 'react-icons/io';
+import Header from '../components/Header';
+
 import './Home.css'
 const Home = () => {
     const navigate= useNavigate()
@@ -72,7 +74,10 @@ const Home = () => {
   };
 
   return (
-    <div className="futuristic-home">
+
+<>
+< Header/>
+  <div className="futuristic-home">
   
       
       <main>
@@ -149,7 +154,7 @@ const Home = () => {
           <div className="container">
             <div className="section-header">
               <h2>WHY CHOOSE LETRIDE</h2>
-              <p>We're redefining the car rental experience</p>
+              {/* <p>We're redefining the car rental experience</p> */}
             </div>
             
             <div className="features-grid">
@@ -157,7 +162,7 @@ const Home = () => {
                 <div className="feature-icon">
                   <FiShield />
                 </div>
-                <h3>Blockchain Security</h3>
+                <h3>Specialized Security</h3>
                 <p>Smart contract powered rentals with encrypted transactions</p>
               </div>
               
@@ -182,6 +187,7 @@ const Home = () => {
       </main>
       
     </div>
+    </>
   );
 };
 
