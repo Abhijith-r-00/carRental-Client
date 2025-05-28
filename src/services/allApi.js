@@ -20,3 +20,6 @@ export const getAllAvailableVehicle=async(req,requestHeader)=>{
      
     return await commonApi('get',`/getAvailableVehicle?search=${req}`,{},requestHeader)
 }
+export const addBooking=async(req,requestHeader)=>{
+    return await commonApi('post','/addBooking',req,requestHeader)
+}

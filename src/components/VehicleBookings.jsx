@@ -1,38 +1,68 @@
+// VehicleBookings.js
 import React, { useState } from 'react';
-import {
-  FiCalendar, FiCreditCard, FiUser, FiCheck
-} from 'react-icons/fi';
-import { FaCar, FaGasPump, FaMoneyBillWave } from 'react-icons/fa';
+import { FiCalendar } from 'react-icons/fi';
+import { FaCar, FaGasPump } from 'react-icons/fa';
 import { IoMdSpeedometer } from 'react-icons/io';
 import { MdAirlineSeatReclineExtra } from 'react-icons/md';
+import { PayPalButtons } from '@paypal/react-paypal-js';
 import './VehicleBookings.css';
+import { addBooking } from '../services/allApi';
 
 const VehicleBookings = ({ vehicle, onClose }) => {
   const [step, setStep] = useState(1);
   const [bookingDetails, setBookingDetails] = useState({
     pickupDate: '',
-    returnDate: '',
-    paymentMethod: 'credit',
-    cardNumber: '',
-    cardExpiry: '',
-    cardCvc: '',
-    name: ''
+    returnDate: ''
   });
+  const [bookingConfirmed, setBookingConfirmed] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setBookingDetails(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleContinue = (e) => {
     e.preventDefault();
-    if (step < 3) {
-      setStep(step + 1);
-    } else {
-      console.log('Booking submitted:', { vehicle, bookingDetails });
-      onClose();
+    if (bookingDetails.pickupDate && bookingDetails.returnDate) {
+      setStep(2);
     }
   };
+
+  const getRentalDays = () => {
+    const start = new Date(bookingDetails.pickupDate);
+    const end = new Date(bookingDetails.returnDate);
+    const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+    return diff > 0 ? diff : 1;
+  };
+
+  if (!vehicle) {
+    return <div className="booking-modal"><p>No vehicle data.</p></div>;
+  }
+
+  const totalCost = vehicle.pricePerDay * getRentalDays();
+
+
+const onbtnpay = async () => {
+  const bookingData = {
+    ...bookingDetails,
+    ...vehicle,
+  };
+  console.log(bookingData)
+
+  try {
+    let requestHeader = {
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      };
+    const apiResponse = await addBooking(bookingData,requestHeader);
+    console.log("Booking successful", apiResponse);
+    // Optionally close dialog or show success message
+    onClose();
+  } catch (error) {
+    console.error("Booking failed", error);
+  }
+};
+
+
 
   return (
     <div className="booking-modal">
@@ -45,9 +75,7 @@ const VehicleBookings = ({ vehicle, onClose }) => {
             {vehicle.image ? (
               <img src={vehicle.image} alt={`${vehicle.make} ${vehicle.model}`} />
             ) : (
-              <div className="image-placeholder">
-                <FaCar size={48} />
-              </div>
+              <div className="image-placeholder"><FaCar size={48} /></div>
             )}
           </div>
           <div className="vehicle-details">
@@ -65,7 +93,7 @@ const VehicleBookings = ({ vehicle, onClose }) => {
         </div>
 
         {/* Booking Form */}
-        <form onSubmit={handleSubmit} className="booking-form">
+        <form onSubmit={handleContinue} className="booking-form">
           {step === 1 && (
             <div className="form-step">
               <h3>Select Dates</h3>
@@ -95,122 +123,56 @@ const VehicleBookings = ({ vehicle, onClose }) => {
                   />
                 </label>
               </div>
+              <div className="form-actions">
+                <button  type="submit" className="primary-btn">Continue to PayPal</button>
+              </div>
             </div>
           )}
 
           {step === 2 && (
             <div className="form-step">
-              <h3>Payment Method</h3>
-              <div className="payment-methods">
-                <label className={`payment-option ${bookingDetails.paymentMethod === 'credit' ? 'active' : ''}`}>
-                  <input
-                    type="radio"
-                    name="paymentMethod"
-                    value="credit"
-                    checked={bookingDetails.paymentMethod === 'credit'}
-                    onChange={handleInputChange}
-                  />
-                  <FiCreditCard className="payment-icon" />
-                  Credit Card
-                </label>
-                <label className={`payment-option ${bookingDetails.paymentMethod === 'debit' ? 'active' : ''}`}>
-                  <input
-                    type="radio"
-                    name="paymentMethod"
-                    value="debit"
-                    checked={bookingDetails.paymentMethod === 'debit'}
-                    onChange={handleInputChange}
-                  />
-                  <FaMoneyBillWave className="payment-icon" />
-                  Debit Card
-                </label>
-              </div>
-
-              <div className="card-details">
-                <div className="input-group">
-                  <label>
-                    <FiCreditCard className="input-icon" />
-                    Card Number
-                    <input
-                      type="text"
-                      name="cardNumber"
-                      value={bookingDetails.cardNumber}
-                      onChange={handleInputChange}
-                      placeholder="1234 5678 9012 3456"
-                      required
-                    />
-                  </label>
-                </div>
-                <div className="card-row">
-                  <div className="input-group">
-                    <label>
-                      Expiry Date
-                      <input
-                        type="text"
-                        name="cardExpiry"
-                        value={bookingDetails.cardExpiry}
-                        onChange={handleInputChange}
-                        placeholder="MM/YY"
-                        required
-                      />
-                    </label>
-                  </div>
-                  <div className="input-group">
-                    <label>
-                      CVC
-                      <input
-                        type="text"
-                        name="cardCvc"
-                        value={bookingDetails.cardCvc}
-                        onChange={handleInputChange}
-                        placeholder="123"
-                        required
-                      />
-                    </label>
-                  </div>
-                </div>
-                <div className="input-group">
-                  <label>
-                    <FiUser className="input-icon" />
-                    Cardholder Name
-                    <input
-                      type="text"
-                      name="name"
-                      value={bookingDetails.name}
-                      onChange={handleInputChange}
-                      placeholder="Name on card"
-                      required
-                    />
-                  </label>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {step === 3 && (
-            <div className="form-step confirmation">
-              <div className="confirmation-icon">
-                <FiCheck />
-              </div>
-              <h3>Confirm Booking</h3>
+              <h3>Payment via PayPal</h3>
               <div className="booking-summary">
-                <div className="summary-item"><span>Vehicle:</span><span>{vehicle.make} {vehicle.model}</span></div>
-                <div className="summary-item"><span>Pickup:</span><span>{bookingDetails.pickupDate}</span></div>
-                <div className="summary-item"><span>Return:</span><span>{bookingDetails.returnDate}</span></div>
-                <div className="summary-item"><span>Payment:</span><span>{bookingDetails.paymentMethod === 'credit' ? 'Credit' : 'Debit'} Card</span></div>
-                <div className="summary-item total"><span>Total:</span><span>${vehicle.pricePerDay * 3} (3 days)</span></div>
+                <p><strong>Vehicle:</strong> {vehicle.make} {vehicle.model}</p>
+                <p><strong>Pickup:</strong> {bookingDetails.pickupDate}</p>
+                <p><strong>Return:</strong> {bookingDetails.returnDate}</p>
+                <p><strong>Total:</strong> ${totalCost.toFixed(2)}</p>
               </div>
+
+              {!bookingConfirmed ? (
+                <PayPalButtons
+                onClick={onbtnpay}
+                  style={{ layout: "vertical" }}
+                  createOrder={(data, actions) => {
+                    return actions.order.create({
+                      purchase_units: [{
+                        amount: {
+                          value: totalCost.toFixed(2),
+                        },
+                      }],
+                    });
+                  }}
+                  onApprove={(data, actions) => {
+                    return actions.order.capture().then(details => {
+                      console.log('Payment successful:', details);
+                      setBookingConfirmed(true);
+                      onClose(); // Optional: Replace with success modal
+                    });
+                  }}
+                  onCancel={() => {
+                    console.log("Payment cancelled");
+                  }}
+                  onError={(err) => {
+                    console.error("PayPal Checkout Error", err);
+                  }}
+                />
+              ) : (
+                <div className="confirmation-message">
+                  <h4>Booking Confirmed!</h4>
+                </div>
+              )}
             </div>
           )}
-
-          <div className="form-actions">
-            {step > 1 && (
-              <button type="button" className="secondary-btn" onClick={() => setStep(step - 1)}>Back</button>
-            )}
-            <button type="submit" className="primary-btn">
-              {step < 3 ? 'Continue' : 'Confirm Booking'}
-            </button>
-          </div>
         </form>
       </div>
     </div>

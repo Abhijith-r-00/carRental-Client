@@ -1,7 +1,12 @@
-import { defineConfig } from 'vite'
+// vite.config.js
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
-export default defineConfig({
+export default {
   plugins: [react()],
-})
+  optimizeDeps: {
+    include: ['react', 'react-dom', '@mui/material',
+      '@mui/icons-material',
+      '@mui/x-charts',
+      '@mui/material/styles'],
+  },
+}
